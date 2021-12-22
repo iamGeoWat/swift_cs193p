@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸"]
-    @State var emojiCount = 4
+    let emojiLibrary = ["animals": ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸", "🐔", "🐧", "🐦", "🐤", "🦆", "🐝", "🦄"], "vehicles": ["🏍", "🛺", "🚔", "🚍", "🚘", "🚖", "🚡", "🚃", "🚄", "🚂", "✈️", "🚀", "🛸", "⛵️", "🚁", "🛳", "🛰"], "foods": ["🍌", "🍉", "🍇", "🍓", "🍈", "🍒", "🥭", "🍟", "🫓", "🥙", "🍲", "🍱", "🥗", "🥠", "🍢", "🍙", "🍭"]]
+    @State var emojis = ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸"].shuffled()
+    @State var emojiCount = 8
     // function return will replace SOME after excuted
     var body: some View {
         VStack {
+            Text("Memorize!").font(.largeTitle)
             ScrollView {
                 // LAZY is lazy about accessing body vars of its views
                 // because creating views is light, accessing body is heavy
@@ -29,6 +31,12 @@ struct ContentView: View {
             HStack {
                 add
                 Spacer()
+                themeAnimals
+                Spacer()
+                themeFoods
+                Spacer()
+                themeVehicles
+                Spacer()
                 remove
             }
             .font(.largeTitle)
@@ -36,13 +44,55 @@ struct ContentView: View {
         }
         .padding(.horizontal)
     }
+    var themeAnimals: some View {
+        Button {
+            emojis = emojiLibrary["animals"]!
+            emojiCount = 8
+            emojis.shuffle()
+        } label: {
+            VStack {
+                Image(systemName: "pawprint")
+                    .font(.title)
+                    .frame(width: 30, height: 30)
+                Text("Animals").font(.footnote)
+            }
+        }
+    }
+    var themeVehicles: some View {
+        Button {
+            emojis = emojiLibrary["vehicles"]!
+            emojiCount = 8
+            emojis.shuffle()
+        } label: {
+            VStack() {
+                Image(systemName: "car.2")
+                    .font(.title)
+                    .frame(width: 30, height: 30)
+                Text("Vehicles").font(.footnote)
+            }
+        }
+    }
+    var themeFoods: some View {
+        Button {
+            emojis = emojiLibrary["foods"]!
+            emojiCount = 8
+            emojis.shuffle()
+        } label: {
+            VStack {
+                Image(systemName: "takeoutbag.and.cup.and.straw")
+                    .font(.title)
+                    .frame(width: 30, height: 30)
+                Text("Foods").font(.footnote)
+            }
+        }
+    }
     var add: some View {
         // both of them are functions, then can get rid of the keyword, and get out of the parentheses
         Button {
             if emojiCount < emojis.count { emojiCount += 1 }
         } label: {
             VStack {
-                // using developer.apple.com/sf-symbols
+                // using https://www.developer.apple.com/sf-symbols
                 Image(systemName: "plus.circle")
             }
         }
