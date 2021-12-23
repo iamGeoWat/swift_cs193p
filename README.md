@@ -1,5 +1,7 @@
 # CS193p
 
+Can I finish it in half a month?
+
 ## Materials
 
 - Class Website: https://cs193p.sites.stanford.edu/
