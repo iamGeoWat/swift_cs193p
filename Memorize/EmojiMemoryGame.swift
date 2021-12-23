@@ -16,7 +16,7 @@ class EmojiMemoryGame {
     // static make it namespaced global constant(Type Property). Also good for func(Type Function). Thus can be accessed in property initializers.
     static let emojis = ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸"].shuffled()
     
-    // use private to control access. (set) means Read-only, or provide getter
+    // use private to control access. (set) means Read-only, if not use (set), provide getter
     private(set) var model: MemoryGame<String>
     
     init() {
