@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojiLibrary = ["animals": ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸", "🐔", "🐧", "🐦", "🐤", "🦆", "🐝", "🦄"], "vehicles": ["🏍", "🛺", "🚔", "🚍", "🚘", "🚖", "🚡", "🚃", "🚄", "🚂", "✈️", "🚀", "🛸", "⛵️", "🚁", "🛳", "🛰"], "foods": ["🍌", "🍉", "🍇", "🍓", "🍈", "🍒", "🥭", "🍟", "🫓", "🥙", "🍲", "🍱", "🥗", "🥠", "🍢", "🍙", "🍭"]]
     @State var emojis = ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸"].shuffled()
     @State var emojiCount = 8
     // function return will replace SOME after excuted
@@ -29,15 +28,11 @@ struct ContentView: View {
             .foregroundColor(.purple)
             Spacer()
             HStack {
-                add
-                Spacer()
                 themeAnimals
                 Spacer()
                 themeFoods
                 Spacer()
                 themeVehicles
-                Spacer()
-                remove
             }
             .font(.largeTitle)
             .padding(.horizontal)
@@ -73,6 +68,7 @@ struct ContentView: View {
         }
     }
     var themeFoods: some View {
+        // both of them are functions, then can get rid of the keyword, and get out of the parentheses
         Button {
             emojis = emojiLibrary["foods"]!
             emojiCount = 8
@@ -85,26 +81,6 @@ struct ContentView: View {
                 Text("Foods").font(.footnote)
             }
         }
-    }
-    var add: some View {
-        // both of them are functions, then can get rid of the keyword, and get out of the parentheses
-        Button {
-            if emojiCount < emojis.count { emojiCount += 1 }
-        } label: {
-            VStack {
-                // using https://www.developer.apple.com/sf-symbols
-                Image(systemName: "plus.circle")
-            }
-        }
-    }
-    var remove: some View {
-        Button(action: {
-            if emojiCount > 1 { emojiCount -= 1 }
-        }, label: {
-            VStack {
-                Image(systemName: "minus.circle")
-            }
-        })
     }
 }
 
@@ -152,3 +128,10 @@ struct ContentView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
     }
 }
+
+
+// NOTES:
+// 1. SwiftUI use MVVM:
+//      Model: UI Independent Data and Logic
+//      View: Reflects the model, stateless, declartive, reactive
+//      ViewModel: Binds View to Model, Interpreting data (from Database, Online) to what View needs
