@@ -1,4 +1,11 @@
-# CS193p Progress
+# CS193p
+
+## Materials
+
+- Class Website: https://cs193p.sites.stanford.edu/
+- Imperative, Functional and Reactive Programming: https://notes.gryen.com/articles/show/279.html
+
+## Progress
 
 - Lecture 1 ✅
 - Lecture 2 ✅
