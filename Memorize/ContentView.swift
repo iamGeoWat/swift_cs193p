@@ -9,8 +9,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var emojis = ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸"].shuffled()
-    @State var emojiCount = 8
+    // KEY OF MVVM: @ObservedObject
+    @ObservedObject var game: EmojiMemoryGame // This is the ViewModel, ViewModel is created and injected in App.swift
+    
     // function return will replace SOME after excuted
     var body: some View {
         VStack {
@@ -20,9 +21,13 @@ struct ContentView: View {
                 // because creating views is light, accessing body is heavy
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
                     // ForEach requires element to behave like(conform) Identifiable, which needs an id, could be \.self that every element has.
-                    ForEach(emojis[0..<emojiCount], id: \.self, content: {
-                        emoji in CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
-                    })
+                    ForEach(game.cards) { card in
+                        CardView(card: card)
+                            .aspectRatio(2/3, contentMode: .fit)
+                            .onTapGesture {
+                                game.choose(card)
+                            }
+                    }
                 }
             }
             .foregroundColor(.purple)
@@ -41,9 +46,7 @@ struct ContentView: View {
     }
     var themeAnimals: some View {
         Button {
-            emojis = emojiLibrary["animals"]!
-            emojiCount = 8
-            emojis.shuffle()
+            game.changeTheme(to: "animals")
         } label: {
             VStack {
                 Image(systemName: "pawprint")
@@ -55,9 +58,7 @@ struct ContentView: View {
     }
     var themeVehicles: some View {
         Button {
-            emojis = emojiLibrary["vehicles"]!
-            emojiCount = 8
-            emojis.shuffle()
+            game.changeTheme(to: "animals")
         } label: {
             VStack() {
                 Image(systemName: "car.2")
@@ -70,9 +71,7 @@ struct ContentView: View {
     var themeFoods: some View {
         // both of them are functions, then can get rid of the keyword, and get out of the parentheses
         Button {
-            emojis = emojiLibrary["foods"]!
-            emojiCount = 8
-            emojis.shuffle()
+            game.changeTheme(to: "animals")
         } label: {
             VStack {
                 Image(systemName: "takeoutbag.and.cup.and.straw")
@@ -85,9 +84,9 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    var content: String
+    let card: MemoryGame<String>.Card
     // Option + Click to pop up documents
-    @State var isFaceUp: Bool = false
+    // @State var isFaceUp: Bool = false
     // @State: temporary state(middle of drag), not used often
     // @State will make variable become a pointer to memory which stores the actual variable
     
@@ -96,16 +95,15 @@ struct CardView: View {
             let shape = RoundedRectangle(cornerRadius: 20)
             // Swift will infer type
             // let for constant
-            if isFaceUp {
+            if card.isFaceUp {
                 shape.fill().foregroundColor(.white)
                 shape.stroke(lineWidth: 3)
-                Text(content).font(.largeTitle)
+                Text(card.content).font(.largeTitle)
+            } else if card.isMatched {
+                shape.opacity(0)
             } else {
                 shape.fill()
             }
-        }
-        .onTapGesture {
-            isFaceUp = !isFaceUp
         }
     }
 }
@@ -122,9 +120,10 @@ struct CardView: View {
 struct ContentView_Previews: PreviewProvider {
     // this part is for generating preview window
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame()
+        ContentView(game: game)
             .preferredColorScheme(.dark)
-        ContentView()
+        ContentView(game: game)
             .preferredColorScheme(.light)
     }
 }

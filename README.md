@@ -7,4 +7,5 @@
 	- https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html
 - Coding Assignment 1 ✅
 - Lecture 3 ✅
+- Lecture 4 ✅
 
