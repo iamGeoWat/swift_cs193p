@@ -1,6 +1,6 @@
 # CS193p
 
-Can I finish it in half a month?
+*Can I finish it in half a month?*
 
 ## Materials
 
