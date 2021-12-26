@@ -17,4 +17,6 @@
 - Coding Assignment 1 ✅
 - Lecture 3 ✅
 - Lecture 4 ✅
+- Reading Assignment 2 ✅
+	- https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/Reading%202.pdf
 
