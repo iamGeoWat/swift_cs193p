@@ -11,8 +11,7 @@ import SwiftUI
 // KEY OF MVVM: ObervableObject and @Published
 class EmojiMemoryGame: ObservableObject {
     // static make it namespaced global constant(Type Property). Also good for func(Type Function). Thus can be accessed in property initializers.
-    static var emojis = ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸"].shuffled()
-    static let emojiLibrary = ["animals": ["🐒", "🐯", "🐭", "🐷", "🐶", "🐱", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🦁", "🐮", "🐸", "🐔", "🐧", "🐦", "🐤", "🦆", "🐝", "🦄"], "vehicles": ["🏍", "🛺", "🚔", "🚍", "🚘", "🚖", "🚡", "🚃", "🚄", "🚂", "✈️", "🚀", "🛸", "⛵️", "🚁", "🛳", "🛰"], "foods": ["🍌", "🍉", "🍇", "🍓", "🍈", "🍒", "🥭", "🍟", "🫓", "🥙", "🍲", "🍱", "🥗", "🥠", "🍢", "🍙", "🍭"]]
+    private var theme: Theme
     
     // use private to control access. (set) means Read-only, if not use (set), provide getter
     // private(set) var model: MemoryGame<String>
@@ -22,18 +21,54 @@ class EmojiMemoryGame: ObservableObject {
         return model.cards
     }
     
-    func changeTheme(to theme: String) {
-        EmojiMemoryGame.emojis = EmojiMemoryGame.emojiLibrary[theme]!
-        EmojiMemoryGame.emojis.shuffle()
+    static func createMemoryGame(_ theme: Theme) -> MemoryGame<String> {
+        MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairOfCardsToShow) { index in theme.emojis[index] }
+    }
+    
+    func getThemeName() -> String {
+        return theme.name
+    }
+    
+    // color interpreter
+    func getColor() -> Color {
+        switch theme.color {
+        case "Purple":
+            return Color.purple
+        case "Green":
+            return Color.green
+        case "Red":
+            return Color.red
+        case "Yellow":
+            return Color.yellow
+        case "Cyan":
+            return Color.cyan
+        case "Pink":
+            return Color.pink
+        case "Grey":
+            return Color.gray
+        default:
+            return Color.purple
+        }
     }
     
     init() {
-        model = MemoryGame<String>(numberOfPairsOfCards: 4) { index in EmojiMemoryGame.emojis[index] }
+        theme = Theme()
+        model = EmojiMemoryGame.createMemoryGame(theme)
     }
     
     // MARK: - Intents
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card)
+    }
+    
+    func getScore() -> String {
+        return String(model.score)
+    }
+    
+    // randomly change theme
+    func refreshMemoryGame() {
+        theme = Theme()
+        model = EmojiMemoryGame.createMemoryGame(theme)
     }
     
 }

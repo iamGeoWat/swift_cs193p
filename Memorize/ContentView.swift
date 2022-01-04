@@ -15,7 +15,8 @@ struct ContentView: View {
     // function return will replace SOME after excuted
     var body: some View {
         VStack {
-            Text("Memorize!").font(.largeTitle)
+            Text("Memorize \(game.getThemeName())!").font(.largeTitle)
+            Text("Your Score: \(game.getScore())").font(.title)
             ScrollView {
                 // LAZY is lazy about accessing body vars of its views
                 // because creating views is light, accessing body is heavy
@@ -30,54 +31,25 @@ struct ContentView: View {
                     }
                 }
             }
-            .foregroundColor(.purple)
+            .foregroundColor(game.getColor())
             Spacer()
             HStack {
-                themeAnimals
-                Spacer()
-                themeFoods
-                Spacer()
-                themeVehicles
+                newGame
             }
             .font(.largeTitle)
             .padding(.horizontal)
         }
         .padding(.horizontal)
     }
-    var themeAnimals: some View {
+    var newGame: some View {
         Button {
-            game.changeTheme(to: "animals")
+            game.refreshMemoryGame()
         } label: {
             VStack {
-                Image(systemName: "pawprint")
+                Image(systemName: "arrow.clockwise.circle")
                     .font(.title)
                     .frame(width: 30, height: 30)
-                Text("Animals").font(.footnote)
-            }
-        }
-    }
-    var themeVehicles: some View {
-        Button {
-            game.changeTheme(to: "animals")
-        } label: {
-            VStack() {
-                Image(systemName: "car.2")
-                    .font(.title)
-                    .frame(width: 30, height: 30)
-                Text("Vehicles").font(.footnote)
-            }
-        }
-    }
-    var themeFoods: some View {
-        // both of them are functions, then can get rid of the keyword, and get out of the parentheses
-        Button {
-            game.changeTheme(to: "animals")
-        } label: {
-            VStack {
-                Image(systemName: "takeoutbag.and.cup.and.straw")
-                    .font(.title)
-                    .frame(width: 30, height: 30)
-                Text("Foods").font(.footnote)
+                Text("New Game").font(.footnote)
             }
         }
     }
@@ -86,6 +58,7 @@ struct ContentView: View {
 struct CardView: View {
     let card: MemoryGame<String>.Card
     // Option + Click to pop up documents
+    
     // @State var isFaceUp: Bool = false
     // @State: temporary state(middle of drag), not used often
     // @State will make variable become a pointer to memory which stores the actual variable

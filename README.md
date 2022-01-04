@@ -20,3 +20,5 @@
 - Reading Assignment 2 ✅
 	- https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/Reading%202.pdf
 - Out for holiday ⛱️
+- Coding Assignment 2 ✅
+
