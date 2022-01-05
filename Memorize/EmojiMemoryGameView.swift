@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  EmojiMemoryGameView.swift
 //  Memorize
 //
 //  Created by GeoWat on 2021/12/14.
@@ -8,7 +8,7 @@
 // SwiftUI uses functional programming
 import SwiftUI
 
-struct ContentView: View {
+struct EmojiMemoryGameView: View {    
     // KEY OF MVVM: @ObservedObject
     @ObservedObject var game: EmojiMemoryGame // This is the ViewModel, ViewModel is created and injected in App.swift
     
@@ -56,7 +56,7 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    let card: MemoryGame<String>.Card
+    let card: EmojiMemoryGame.Card
     // Option + Click to pop up documents
     
     // @State var isFaceUp: Bool = false
@@ -94,9 +94,9 @@ struct ContentView_Previews: PreviewProvider {
     // this part is for generating preview window
     static var previews: some View {
         let game = EmojiMemoryGame()
-        ContentView(game: game)
+        EmojiMemoryGameView(game: game)
             .preferredColorScheme(.dark)
-        ContentView(game: game)
+        EmojiMemoryGameView(game: game)
             .preferredColorScheme(.light)
     }
 }

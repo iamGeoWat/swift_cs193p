@@ -10,6 +10,9 @@ import SwiftUI
 // ViewModel should be a class, for sharing within View components
 // KEY OF MVVM: ObervableObject and @Published
 class EmojiMemoryGame: ObservableObject {
+    // for clean up the code
+    typealias Card = MemoryGame<String>.Card
+
     // static make it namespaced global constant(Type Property). Also good for func(Type Function). Thus can be accessed in property initializers.
     private var theme: Theme
     
@@ -17,12 +20,12 @@ class EmojiMemoryGame: ObservableObject {
     // private(set) var model: MemoryGame<String>
     @Published private var model: MemoryGame<String>
     
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         return model.cards
     }
     
     static func createMemoryGame(_ theme: Theme) -> MemoryGame<String> {
-        MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairOfCardsToShow) { index in theme.emojis[index] }
+        MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairsOfCardsToShow) { index in theme.emojis[index] }
     }
     
     func getThemeName() -> String {
@@ -57,7 +60,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     // MARK: - Intents
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
     }
     

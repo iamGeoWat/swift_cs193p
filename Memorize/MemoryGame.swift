@@ -16,10 +16,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     var score: Int = 0
 
-    private var indexOfTheOneAndOnlyFaceUpCard: Int?
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get { cards.indices.filter({cards[$0].isFaceUp}).oneAndOnly }
+        set { cards.indices.forEach{cards[$0].isFaceUp = ($0 == newValue)} }
+    }
     
     init(numberOfPairsOfCards: Int, createCardContent: (Int) -> CardContent) {
-        cards = Array<Card>()
+        cards = []
+        // cards = Array<Card>() Swift can infer the type
         // add numberOfPairsOfCards*2 cards to cards
         for index in 0..<numberOfPairsOfCards {
             let content: CardContent = createCardContent(index)
@@ -47,22 +51,27 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                 }
                 cards[lastChosen].seen = true
                 cards[chosenIndex].seen = true
-                indexOfTheOneAndOnlyFaceUpCard = nil
+                cards[chosenIndex].isFaceUp = true
             } else {
-                for index in cards.indices {
-                    cards[index].isFaceUp = false
-                }
+                // integrated with computed property in indexOfTheOneAndOnlyFaceUpCard
+                // for index in cards.indices {
+                //     cards[index].isFaceUp = false
+                // }
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }
-            cards[chosenIndex].isFaceUp.toggle()
         }
     }
     
     struct Card: Identifiable {
-        var isFaceUp: Bool = false
-        var isMatched: Bool = false
-        var seen: Bool = false
-        var content: CardContent
-        var id: Int
+        var isFaceUp = false
+        var isMatched = false
+        var seen = false
+        let content: CardContent
+        let id: Int
     }
+}
+
+extension Array {
+    // if there is only one element in array, return the element, else return nil
+    var oneAndOnly: Element? { count == 1 ? first : nil }
 }

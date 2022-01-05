@@ -25,14 +25,14 @@ struct Theme {
 
     var name: String = "Animals"
     
-    var numberOfPairOfCardsToShow: Int = 6
+    var numberOfPairsOfCardsToShow: Int = 6
     
     var color: String = "Purple"
     
     mutating func chooseTheme(_ name: String) {
         if let newEmojis = Theme.emojiLibrary[name] {
-            if newEmojis.count < numberOfPairOfCardsToShow {
-                numberOfPairOfCardsToShow = newEmojis.count
+            if newEmojis.count < numberOfPairsOfCardsToShow {
+                numberOfPairsOfCardsToShow = newEmojis.count
             }
             emojis = newEmojis.shuffled()
             self.name = name
@@ -48,7 +48,7 @@ struct Theme {
     
     init(name: String, numberOfPairOfCardsToShow: Int, color: String) {
         self.name = name
-        self.numberOfPairOfCardsToShow = numberOfPairOfCardsToShow
+        self.numberOfPairsOfCardsToShow = numberOfPairOfCardsToShow
         self.color = color
         chooseTheme(name)
     }
