@@ -64,20 +64,35 @@ struct CardView: View {
     // @State will make variable become a pointer to memory which stores the actual variable
     
     var body: some View {
-        ZStack {
-            let shape = RoundedRectangle(cornerRadius: 20)
-            // Swift will infer type
-            // let for constant
-            if card.isFaceUp {
-                shape.fill().foregroundColor(.white)
-                shape.stroke(lineWidth: 3)
-                Text(card.content).font(.largeTitle)
-            } else if card.isMatched {
-                shape.opacity(0)
-            } else {
-                shape.fill()
+        // Use GeometryReader to fit emojis in cards automatically
+        GeometryReader { geometry in
+            ZStack {
+                let shape = RoundedRectangle(cornerRadius: CardConstants.cornerRadios)
+                // Swift will infer type
+                // let for constant
+                if card.isFaceUp {
+                    shape.fill().foregroundColor(.white)
+                    shape.stroke(lineWidth: CardConstants.lineWidth)
+                    Text(card.content).font(font(in: geometry.size))
+                } else if card.isMatched {
+                    shape.opacity(0)
+                } else {
+                    shape.fill()
+                }
             }
         }
+    }
+    
+    // to clean up code
+    private func font(in size: CGSize) -> Font {
+        Font.system(size: min(size.width, size.height) * CardConstants.fontScale)
+    }
+    
+    // to gather magic numbers
+    private struct CardConstants {
+        static let cornerRadios: CGFloat = 20
+        static let lineWidth: CGFloat = 3
+        static let fontScale: CGFloat = 0.8
     }
 }
 // View is read only, it will be constantly rebuilt when logic code changes happen. So var in View is not actual variable, only assign once.
