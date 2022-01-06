@@ -17,20 +17,18 @@ struct EmojiMemoryGameView: View {
         VStack {
             Text("Memorize \(game.getThemeName())!").font(.largeTitle)
             Text("Your Score: \(game.getScore())").font(.title)
-            ScrollView {
-                // LAZY is lazy about accessing body vars of its views
-                // because creating views is light, accessing body is heavy
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                    // ForEach requires element to behave like(conform) Identifiable, which needs an id, could be \.self that every element has.
-                    ForEach(game.cards) { card in
-                        CardView(card: card)
-                            .aspectRatio(2/3, contentMode: .fit)
-                            .onTapGesture {
-                                game.choose(card)
-                            }
-                    }
+            AspectVGrid(items: game.cards, aspectRatio: 2/3, content: { card in
+                // this if-else is a ViewBuilder
+                if card.isMatched && !card.isFaceUp {
+                    Rectangle().opacity(0)
+                } else {
+                    CardView(card: card)
+                        .padding(4)
+                        .onTapGesture {
+                            game.choose(card)
+                        }
                 }
-            }
+            })
             .foregroundColor(game.getColor())
             Spacer()
             HStack {
@@ -73,6 +71,8 @@ struct CardView: View {
                 if card.isFaceUp {
                     shape.fill().foregroundColor(.white)
                     shape.stroke(lineWidth: CardConstants.lineWidth)
+                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
+                        .padding(5).opacity(0.5)
                     Text(card.content).font(font(in: geometry.size))
                 } else if card.isMatched {
                     shape.opacity(0)
@@ -90,9 +90,9 @@ struct CardView: View {
     
     // to gather magic numbers
     private struct CardConstants {
-        static let cornerRadios: CGFloat = 20
+        static let cornerRadios: CGFloat = 10
         static let lineWidth: CGFloat = 3
-        static let fontScale: CGFloat = 0.8
+        static let fontScale: CGFloat = 0.7
     }
 }
 // View is read only, it will be constantly rebuilt when logic code changes happen. So var in View is not actual variable, only assign once.
@@ -109,10 +109,8 @@ struct ContentView_Previews: PreviewProvider {
     // this part is for generating preview window
     static var previews: some View {
         let game = EmojiMemoryGame()
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.dark)
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.light)
+        game.choose(game.cards.first!)
+        return EmojiMemoryGameView(game: game).preferredColorScheme(.dark)
     }
 }
 

@@ -22,3 +22,4 @@
 - Out for holiday ⛱️
 - Coding Assignment 2 ✅
 - Lecture 5 ✅
+- Lecture 6 ✅
