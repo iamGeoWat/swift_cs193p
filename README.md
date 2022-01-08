@@ -1,7 +1,5 @@
 # CS193p
 
-> *Can I finish it in three weeks?*
-
 ## Materials
 
 - Class Website: https://cs193p.sites.stanford.edu/
@@ -23,3 +21,4 @@
 - Coding Assignment 2 ✅
 - Lecture 5 ✅
 - Lecture 6 ✅
+- Got booster shot 💉
