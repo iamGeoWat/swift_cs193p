@@ -65,21 +65,16 @@ struct CardView: View {
         // Use GeometryReader to fit emojis in cards automatically
         GeometryReader { geometry in
             ZStack {
-                let shape = RoundedRectangle(cornerRadius: CardConstants.cornerRadios)
-                // Swift will infer type
-                // let for constant
-                if card.isFaceUp {
-                    shape.fill().foregroundColor(.white)
-                    shape.stroke(lineWidth: CardConstants.lineWidth)
-                    Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
-                        .padding(5).opacity(0.5)
-                    Text(card.content).font(font(in: geometry.size))
-                } else if card.isMatched {
-                    shape.opacity(0)
-                } else {
-                    shape.fill()
-                }
+                Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
+                    .padding(5)
+                    .opacity(0.5)
+                Text(card.content)
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
+                    .font(font(in: geometry.size))
             }
+            // implemented cardify ViewModifier to simplify this
+            .cardify(isFaceUp: card.isFaceUp)
         }
     }
     
@@ -90,8 +85,6 @@ struct CardView: View {
     
     // to gather magic numbers
     private struct CardConstants {
-        static let cornerRadios: CGFloat = 10
-        static let lineWidth: CGFloat = 3
         static let fontScale: CGFloat = 0.7
     }
 }
