@@ -20,12 +20,16 @@ struct EmojiMemoryGameView: View {
             AspectVGrid(items: game.cards, aspectRatio: 2/3, content: { card in
                 // this if-else is a ViewBuilder
                 if card.isMatched && !card.isFaceUp {
-                    Rectangle().opacity(0)
+                    Color.clear
+                    // Same: Rectangle().opacity(0)
                 } else {
                     CardView(card: card)
                         .padding(4)
                         .onTapGesture {
-                            game.choose(card)
+                            // added animaiton here
+                            withAnimation {
+                                game.choose(card)
+                            }
                         }
                 }
             })
@@ -33,6 +37,13 @@ struct EmojiMemoryGameView: View {
             Spacer()
             HStack {
                 newGame
+                Spacer()
+                Button("Shuffle") {
+                    // added animaiton here
+                    withAnimation {
+                        game.shuffle()
+                    }
+                }
             }
             .font(.largeTitle)
             .padding(.horizontal)
@@ -69,8 +80,9 @@ struct CardView: View {
                     .padding(5)
                     .opacity(0.5)
                 Text(card.content)
+                    // added animaiton here
                     .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-                    .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
+                    .animation(Animation.linear)
                     .font(font(in: geometry.size))
             }
             // implemented cardify ViewModifier to simplify this

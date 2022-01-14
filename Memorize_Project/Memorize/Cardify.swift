@@ -7,16 +7,26 @@
 
 import SwiftUI
 
-// This is a ViewModifier
-struct Cardify: ViewModifier {
-    var isFaceUp: Bool
+// This is a ViewModifier, then made into an AnimatableModifier
+struct Cardify: AnimatableModifier {
+    var rotation: Double
+    
+    init(isFaceUp: Bool) {
+        rotation = isFaceUp ? 0 : 180
+    }
+    
+    // required member of AnimatableModifier, telling SwiftUI what data to animate
+    var animatableData: Double {
+        get { rotation }
+        set { rotation = newValue }
+    }
     
     func body(content: Content) -> some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: CardConstants.cornerRadios)
             // Swift will infer type
             // let for constant
-            if isFaceUp {
+            if animatableData < 90 {
                 shape.fill().foregroundColor(.white)
                 shape.stroke(lineWidth: CardConstants.lineWidth)
             } else {
@@ -27,8 +37,9 @@ struct Cardify: ViewModifier {
             // 1. Animation only animate changes, in this case, isMatched changed, not a problem with rule 1
             // 2. Animation only works on contents already on screen. Because isFaceUp and isMatched are set to true at the same time, if emoji is in if-else, it renders when isMatched already is true. So animation will fail.
             content
-                .opacity(isFaceUp ? 1 : 0)
+                .opacity(animatableData < 90 ? 1 : 0)
         }
+        .rotation3DEffect(Angle.degrees(animatableData), axis: (0, 1, 0))
     }
     
     private struct CardConstants {

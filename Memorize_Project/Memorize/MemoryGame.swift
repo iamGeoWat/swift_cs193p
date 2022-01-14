@@ -33,6 +33,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cards.shuffle()
     }
     
+    mutating func shuffle() {
+        cards.shuffle()
+    }
+    
     mutating func choose(_ card: Card) {
         // Game logic here:
         // When use if let, use comma to seperate conditions
