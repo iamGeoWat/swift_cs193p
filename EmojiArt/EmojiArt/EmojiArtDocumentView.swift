@@ -12,8 +12,8 @@ struct EmojiArtDocumentView: View {
     
     var body: some View {
         VStack {
-            documentBody
-            palette
+    documentBody
+    palette
         }
     }
     

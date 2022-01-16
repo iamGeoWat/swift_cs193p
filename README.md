@@ -27,3 +27,4 @@
 - Lecture 7 ✅
 - Lecture 8 ✅
 - Lecture 9 ✅
+- Lecture 10 ✅
